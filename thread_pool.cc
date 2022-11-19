@@ -25,7 +25,10 @@ public:
   function_wrapper &operator=(const function_wrapper &) = delete;
 };
 class thread_pool {
+  std::atomic_bool done;
   thread_safe_queue<function_wrapper> work_queue; // 使用function_wrapper，而非 std::function
+  std::vector<std::thread> threads; // 2
+  join_threads joiner;              // 3
 
   void worker_thread() {
     while (!done) {
